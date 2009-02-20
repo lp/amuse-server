@@ -1,5 +1,6 @@
 class MessageStore
 	require 'sequel'
+	require 'app/helpers/serial_cache'
 	
 	def initialize(path)
 		store = path + '.blob'
@@ -39,6 +40,9 @@ class MessageStore
 	
 	def new_message(row_hash)
 		@db[:store] << row_hash
+		last_id = @db[:store].last.map(:id)
+		first_id = last_id - 10; first_id = 0 if first_id < 0
+		SerialCache.dashboard(@db[:store].filter(:id => first_id..last_id))
 	end
 	
 	def new_project(name)
