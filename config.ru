@@ -6,8 +6,8 @@ disable :run
 set :app_file, "app/app.rb"
 require 'app/app'
 
-map '/messages' do
-	run FileServer.new('data/messages')
+map '/cache' do
+	run FileServer.new('data/cache')
 end
 
 map '/files' do
