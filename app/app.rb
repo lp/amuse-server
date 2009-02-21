@@ -10,18 +10,18 @@ helpers do
 	include AmuseHelpers
 end
 
-post '/new/author' do
+post '/authors' do
 	Crypt.encrypt( MessageStore.new_author( YAML::load( Crypt.decrypt( params[:o]))))
 end
 
-post '/new/project' do
+post '/projects' do
 	Crypt.encrypt( MessageStore.new_project( YAML::load( Crypt.decrypt( params[:o]))))
 end
 
-post '/new/thread' do
+post '/threads' do
 	Crypt.encrypt( MessageStore.new_thread( YAML::load( Crypt.decrypt( params[:o]))))
 end
 
-post '/new/message' do
+post '/messages' do
 	Crypt.encrypt( MessageStore.new_message( YAML::load( Crypt.decrypt( params[:o]))))
 end
