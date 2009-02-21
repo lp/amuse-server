@@ -1,6 +1,6 @@
 require 'vendor/rack/lib/rack'
 require 'vendor/sinatra/lib/sinatra'
-require 'vendor/fileserver/fileserver'
+require 'app/fileserver'
 
 disable :run
 set :app_file, "app/app.rb"
