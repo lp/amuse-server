@@ -3,7 +3,13 @@ class SerialCache
 	require 'app/helpers/path'
 	require 'app/helpers/crypt'
 	
-	CACHE_ROOT = 'app/data/cache'
+	CACHE_ROOT = 'data/cache'
+	
+	unless File.exist?( Path.catname(CACHE_ROOT,'empty.cache'))
+		File.open(Path.catname(CACHE_ROOT,'empty.cache'),'w') do |file|
+			file.puts( Crypt.encrypt( YAML::dump( Array.new)))
+		end
+	end
 	
 	def self.authors(dataset)
 		File.open(Path.catname(CACHE_ROOT,'authors.cache'),'w') do |file|
@@ -37,8 +43,5 @@ class SerialCache
 			file.puts( Crypt.encrypt( YAML::dump( dataset.map)))
 		end
 	end
-	
-	
-	
 	
 end
