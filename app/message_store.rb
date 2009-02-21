@@ -1,5 +1,5 @@
 module MessageStore
-	require 'sequel'
+	require 'vendor/sequel/lib/sequel'
 	require 'app/serial_cache'
 	DB_PATH = 'app/data/db/message_store.db'
 	
