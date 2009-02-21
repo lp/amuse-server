@@ -5,6 +5,12 @@ class SerialCache
 	
 	CACHE_ROOT = 'app/data/cache'
 	
+	def self.authors(dataset)
+		File.open(Path.catname(CACHE_ROOT,'authors.cache'),'w') do |file|
+			file.puts( Crypt.encrypt( YAML::dump( dataset.map)))
+		end
+	end
+	
 	def self.dashboard(dataset)
 		last_id = dataset.last.map(:id); first_id = last_id - 10; first_id = 0 if first_id < 0
 		File.open(Path.catname(CACHE_ROOT,'dashboard.cache'),'w') do |file|
