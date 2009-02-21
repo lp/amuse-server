@@ -3,43 +3,67 @@ module MessageStore
 	require 'app/serial_cache'
 	DB_PATH = 'app/data/db/message_store.db'
 	
-	@@db = Sequel.sqlite(DB_PATH)
-	begin
-		@@db.create_table :messages do
-			primary_key :id
-			column :project_id, :integer
-			column :thread_id, :integer
-			column :authors_id, :integer
-			column :datetime, :datetime
-			column :title, :text
-			column :message, :text
+	unless File.exist?(DB_PATH)
+		@@db = Sequel.sqlite(DB_PATH)
+		begin
+			@@db.create_table :projects do
+				primary_key :id
+				column :created, :datetime
+				column :name, :text
+				column :description, :text
+			end
+		rescue Sequel::DatabaseError
 		end
-	rescue Sequel::DatabaseError
-	end
-	begin
-		@@db.create_table :threads do
-			primary_key :id
-			column :subject, :text
-			column :project_id, :integer 
+
+		begin
+			@@db.create_table :threads do
+				primary_key :id
+				column :created, :datetime
+				column :subject, :text
+				column :project_id, :integer 
+			end
+		rescue Sequel::DatabaseError
 		end
-	rescue Sequel::DatabaseError
-	end
-	begin
-		@@db.create_table :projects do
-			primary_key :id
-			column :name, :text
-			column :description, :text
+		begin
+			@@db.create_table :authors do
+				primary_key :id
+				column :last_login, :datetime
+				column :name, :text
+				column :email, :text
+				column :avatar, :text
+				column :nickname, :text
+				column :status, :text
+			end
+		rescue Sequel::DatabaseError
 		end
-	rescue Sequel::DatabaseError
-	end
-	begin
-		@@db.create_table :authors do
-			primary_key :id
-			column :name, :text
-			column :avatar, :text
-			column :nickname, :text 
+		
+		begin
+			@@db.create_table :files do
+				primary_key :id
+				column :created, :datetime
+				column :local_path, :text
+				column :author_id, :integer
+				column :project_id, :integer
+				column :type, :text
+				column :description, :text
+				column :attribute, :text
+			end
+		rescue Sequel::DatabaseError
+		end	
+		begin
+			@@db.create_table :messages do
+				primary_key :id
+				column :created, :datetime
+				column :project_id, :integer
+				column :thread_id, :integer
+				column :authors_id, :integer
+				column :title, :text
+				column :message, :text
+			end
+		rescue Sequel::DatabaseError
 		end
-	rescue Sequel::DatabaseError
+	else
+		@@db = Sequel.sqlite(DB_PATH)
 	end
 	
 	def MessageStore.new_author(author_hash)
