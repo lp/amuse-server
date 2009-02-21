@@ -7,7 +7,7 @@ class SerialCache
 	
 	unless File.exist?( Path.catname(CACHE_ROOT,'empty.cache'))
 		File.open(Path.catname(CACHE_ROOT,'empty.cache'),'w') do |file|
-			file.puts( Crypt.encrypt( YAML::dump( Array.new)))
+			file.puts( Crypt.encrypt( YAML::dump( [{}])))
 		end
 	end
 	
