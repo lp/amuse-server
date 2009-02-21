@@ -8,10 +8,8 @@ module MessageStore
 		@@db.create_table :messages do
 			primary_key :id
 			column :project_id, :integer
-			column :project, :text
 			column :thread_id, :integer
-			column :subject, :text 
-			column :author, :text
+			column :authors_id, :integer
 			column :datetime, :datetime
 			column :title, :text
 			column :message, :text
@@ -32,29 +30,41 @@ module MessageStore
 			column :name, :text
 			column :description, :text
 		end
-		rescue Sequel::DatabaseError
+	rescue Sequel::DatabaseError
+	end
+	begin
+		@@db.create_table :authors do
+			primary_key :id
+			column :name, :text
+			column :avatar, :text
+			column :nickname, :text 
+		end
+	rescue Sequel::DatabaseError
 	end
 	
-	def MessageStore.read_thread(id)
-		@@db[:messages].where(:thread_id => id).reverse_order(:id).map
+	def MessageStore.new_author(author_hash)
+		@@db[:authors] << author_hash; new_author_id = @@db[:authors].last
+		SerialCache.authors(@@db[:authors])
+		new_author_id
 	end
 	
 	def MessageStore.new_message(row_hash)
-		@@db[:messages] << row_hash
+		@@db[:messages] << row_hash; new_message_id = @@db[:messages].last
 		SerialCache.dashboard(@@db[:messages])
 		SerialCache.messages(@@db[:messages].where(:thread_id => row_hash[:thread_id]))
+		new_message_id
 	end
 	
-	def MessageStore.new_thread(subject,project_id)
-		@@db[:threads] << {:subject => subject, :project_id => project_id}
-		SerialCache.threads(@@db[:threads].where(:project_id => project_id))
-		@@db[:threads].where(:subject => subject).map(:id).last
+	def MessageStore.new_thread(message_hash)
+		@@db[:threads] << message_hash; new_thread_id = @@db[:threads].last
+		SerialCache.threads(@@db[:threads].where(:project_id => message_hash[:project_id]))
+		new_thread_id
 	end
 	
-	def MessageStore.new_project(name)
-		@@db[:projects] << {:name => name}
+	def MessageStore.new_project(project_hash)
+		@@db[:projects] << project_hash; new_project_id = @@db[:projects].last
 		SerialCache.projects(@@db[:projects])
-		@@db[:projects].where(:name => name).map(:id).last
+		new_project_id
 	end
 	
 end
