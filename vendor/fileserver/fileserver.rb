@@ -8,7 +8,7 @@ class FileServer < Server
 	def call(env)
 		path = env["PATH_INFO"]; file_path = @root + path
 		if File.exist?(file_path)
-			[200, {	'Content-Type' => 'text/plain',
+			[200, {	'Content-Type' => 'application/octet-stream',
 							'Content-Length' => File.size(file_path).to_s},
 							FileStreamer.new(file_path)]
 		else
@@ -21,7 +21,7 @@ class CacheServer < Server
 	def call(env)
 		path = env["PATH_INFO"]; file_path = @root + path
 		file_path = @root + '/empty.cache' unless File.exist?(file_path)
-		[200, {	'Content-Type' => 'text/plain',
+		[200, {	'Content-Type' => 'application/octet-stream',
 						'Content-Length' => File.size(file_path).to_s},
 						FileStreamer.new(file_path)]
 	end
@@ -34,7 +34,7 @@ class FileStreamer
 	
 	def each
 		File.open(@file,'r') do |file|
-			while part = file.read(8192)
+			while part = file.read(1024)
 				yield part
 			end
 		end
