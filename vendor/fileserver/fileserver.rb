@@ -1,24 +1,35 @@
-class FileServer
-	
+class Server
 	def initialize(root)
 		@root = root
 	end
-	
-	def call(env)
-		path = env["PATH_INFO"]
-		file = FileEncoder.new(@root + path)
-		[200, {'Content-Type' => 'text/plain', 'Content-Length' => file.length.to_s}, file]
-	end
-	
 end
 
-class FileEncoder
+class FileServer < Server
+	def call(env)
+		path = env["PATH_INFO"]; file_path = @root + path
+		if File.exist?(file_path)
+			[200, {	'Content-Type' => 'text/plain',
+							'Content-Length' => File.size(file_path).to_s},
+							FileStreamer.new(file_path)]
+		else
+			[404, {	'Content-Type' => 'text/plain' }, 'Sorry, File Not Found']
+		end
+	end
+end
+
+class CacheServer < Server
+	def call(env)
+		path = env["PATH_INFO"]; file_path = @root + path
+		file_path = @root + '/empty.cache' unless File.exist?(file_path)
+		[200, {	'Content-Type' => 'text/plain',
+						'Content-Length' => File.size(file_path).to_s},
+						FileStreamer.new(file_path)]
+	end
+end
+
+class FileStreamer
 	def initialize(file)
 		@file = file
-	end
-	
-	def length
-		File.size(@file)
 	end
 	
 	def each
@@ -28,5 +39,4 @@ class FileEncoder
 			end
 		end
 	end
-	
 end
