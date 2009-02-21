@@ -1,6 +1,6 @@
 module MessageStore
 	require 'sequel'
-	require 'app/helpers/serial_cache'
+	require 'app/serial_cache'
 	DB_PATH = 'app/data/db/message_store.db'
 	
 	@@db = Sequel.sqlite(DB_PATH)
