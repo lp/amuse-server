@@ -7,7 +7,7 @@ set :app_file, "app/app.rb"
 require 'app/app'
 
 map '/cache' do
-	run FileServer.new('data/cache')
+	run CacheServer.new('data/cache')
 end
 
 map '/files' do
