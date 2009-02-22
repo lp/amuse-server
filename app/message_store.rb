@@ -56,7 +56,7 @@ module MessageStore
 				column :created, :datetime
 				column :project_id, :integer
 				column :thread_id, :integer
-				column :authors_id, :integer
+				column :author_id, :integer
 				column :title, :text
 				column :message, :text
 			end
