@@ -18,7 +18,7 @@ class SerialCache
 	end
 	
 	def self.dashboard(dataset)
-		last_id = dataset.last.map(:id); first_id = last_id - 10; first_id = 0 if first_id < 0
+		last_id = dataset.order(:id).last[:id]; first_id = last_id - 10; first_id = 0 if first_id < 0
 		File.open(Path.catname(CACHE_ROOT,'dashboard.cache'),'w') do |file|
 			file.puts( Crypt.encrypt( YAML::dump( dataset.filter(:id => first_id..last_id).map )))
 		end
