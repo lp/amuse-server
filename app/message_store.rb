@@ -1,7 +1,7 @@
 module MessageStore
 	require 'vendor/sequel/lib/sequel'
 	require 'app/serial_cache'
-	DB_PATH = 'app/data/db/message_store.db'
+	DB_PATH = 'data/db/message_store.db'
 	
 	unless File.exist?(DB_PATH)
 		@@db = Sequel.sqlite(DB_PATH)
@@ -67,26 +67,26 @@ module MessageStore
 	end
 	
 	def MessageStore.new_author(author_hash)
-		@@db[:authors] << author_hash; new_author_id = @@db[:authors].last
+		@@db[:authors] << author_hash; new_author_id = @@db[:authors].order(:id).last[:id]
 		SerialCache.authors(@@db[:authors])
 		new_author_id
 	end
 	
 	def MessageStore.new_message(row_hash)
-		@@db[:messages] << row_hash; new_message_id = @@db[:messages].last
+		@@db[:messages] << row_hash; new_message_id = @@db[:messages].order(:id).last[:id]
 		SerialCache.dashboard(@@db[:messages])
 		SerialCache.messages(@@db[:messages].where(:thread_id => row_hash[:thread_id]))
 		new_message_id
 	end
 	
 	def MessageStore.new_thread(message_hash)
-		@@db[:threads] << message_hash; new_thread_id = @@db[:threads].last
+		@@db[:threads] << message_hash; new_thread_id = @@db[:threads].order(:id).last[:id]
 		SerialCache.threads(@@db[:threads].where(:project_id => message_hash[:project_id]))
 		new_thread_id
 	end
 	
 	def MessageStore.new_project(project_hash)
-		@@db[:projects] << project_hash; new_project_id = @@db[:projects].last
+		@@db[:projects] << project_hash; new_project_id = @@db[:projects].order(:id).last[:id]
 		SerialCache.projects(@@db[:projects])
 		new_project_id
 	end
