@@ -17,3 +17,7 @@ end
 map '/app' do
 	run Sinatra::Application
 end
+
+map '/multi/new' do
+	run FileReceive.new('data/files')
+end
