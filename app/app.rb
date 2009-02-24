@@ -5,6 +5,7 @@ require 'app/helpers/messages'
 require 'app/helpers/threads'
 require 'app/helpers/crypt'
 require 'app/message_store'
+require 'app/filestore'
 
 helpers do
 	include AmuseHelpers
@@ -24,4 +25,8 @@ end
 
 post '/messages/new' do
 	Crypt.encrypt( MessageStore.new_message( YAML::load( Crypt.decrypt( params[:o]))).to_s)
+end
+
+put '/files/new/*/*' do
+	FileStore.save(params[:splat][0], params[:splat][1], request.body.read)
 end
