@@ -1,1 +1,1 @@
-require 'vendor/sequel/lib/sequel_model'
+require "#{File.dirname( File.expand_path(__FILE__))}/sequel_model"

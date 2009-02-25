@@ -1,5 +1,5 @@
 %w'callback convenience pagination prepared_statements query schema sql unsupported'.each do |f|
-  require "vendor/sequel/lib/sequel_core/dataset/#{f}"
+  require "#{File.dirname( File.expand_path(__FILE__))}/dataset/#{f}"
 end
 
 module Sequel

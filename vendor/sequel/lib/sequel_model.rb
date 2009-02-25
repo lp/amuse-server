@@ -1,7 +1,7 @@
-require 'vendor/sequel/lib/sequel_core'
+require "#{File.dirname( File.expand_path(__FILE__))}/sequel_core"
 %w"inflector base hooks record schema association_reflection dataset_methods 
   associations caching plugins validations eager_loading exceptions".each do |f|
-  require "vendor/sequel/lib/sequel_model/#{f}"
+  require "#{File.dirname( File.expand_path(__FILE__))}/sequel_model/#{f}"
 end
 
 module Sequel

@@ -1,2 +1,2 @@
-require 'vendor/sequel/lib/sequel_core/schema/generator'
-require 'vendor/sequel/lib/sequel_core/schema/sql'
+require "#{File.dirname( File.expand_path(__FILE__))}/schema/generator"
+require "#{File.dirname( File.expand_path(__FILE__))}/schema/sql"

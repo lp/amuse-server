@@ -1,4 +1,4 @@
-require 'vendor/sequel/lib/sequel_core/database/schema'
+require "#{File.dirname( File.expand_path(__FILE__))}/database/schema"
 
 module Sequel
   # Array of all databases to which Sequel has connected.  If you are
@@ -97,7 +97,7 @@ module Sequel
       if (klass = @@adapters[scheme]).nil?
         # attempt to load the adapter file
         begin
-          require "vendor/sequel/lib/sequel_core/adapters/#{scheme}"
+          require "#{File.dirname( File.expand_path(__FILE__))}/adapters/#{scheme}"
         rescue LoadError => e
           raise Error::AdapterNotFound, "Could not load #{scheme} adapter:\n  #{e.message}"
         end
