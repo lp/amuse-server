@@ -1,6 +1,6 @@
 require 'mysql'
-require 'sequel_core/adapters/shared/mysql'
-require 'sequel_core/dataset/stored_procedures'
+require 'vendor/sequel/lib/sequel_core/adapters/shared/mysql'
+require 'vendor/sequel/lib/sequel_core/dataset/stored_procedures'
 
 module Sequel
   # Module for holding all MySQL-related classes and modules for Sequel.

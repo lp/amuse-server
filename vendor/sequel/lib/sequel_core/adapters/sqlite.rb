@@ -1,5 +1,5 @@
 require 'sqlite3'
-require 'sequel_core/adapters/shared/sqlite'
+require 'vendor/sequel/lib/sequel_core/adapters/shared/sqlite'
 
 module Sequel
   # Top level module for holding all SQLite-related modules and classes

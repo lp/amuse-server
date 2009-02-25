@@ -1,5 +1,5 @@
 require 'oci8'
-require 'sequel_core/adapters/shared/oracle'
+require 'vendor/sequel/lib/sequel_core/adapters/shared/oracle'
 
 module Sequel
   module Oracle

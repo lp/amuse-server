@@ -1,4 +1,4 @@
-require 'sequel_core/adapters/shared/postgres'
+require 'vendor/sequel/lib/sequel_core/adapters/shared/postgres'
 
 begin 
   require 'pg' 

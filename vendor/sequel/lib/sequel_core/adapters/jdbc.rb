@@ -1,5 +1,5 @@
 require 'java'
-require 'sequel_core/dataset/stored_procedures'
+require 'vendor/sequel/lib/sequel_core/dataset/stored_procedures'
 
 module Sequel
   # Houses Sequel's JDBC support when running on JRuby.
