@@ -1,2 +1,2 @@
-require 'sequel_core/schema/generator'
-require 'sequel_core/schema/sql'
+require 'vendor/sequel/lib/sequel_core/schema/generator'
+require 'vendor/sequel/lib/sequel_core/schema/sql'

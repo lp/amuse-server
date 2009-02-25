@@ -1,4 +1,4 @@
-require 'sequel_core/database/schema'
+require 'vendor/sequel/lib/sequel_core/database/schema'
 
 module Sequel
   # Array of all databases to which Sequel has connected.  If you are
