@@ -62,6 +62,15 @@ module MessageStore
 			end
 		rescue Sequel::DatabaseError
 		end
+		begin
+			@@db.create_table :keys do
+				primary_key :id
+				column :created, :datetime
+				column :author_id, :integer
+				column :keys, :text
+			end
+		rescue Sequel::DatabaseError
+		end
 	else
 		@@db = Sequel.sqlite(DB_PATH)
 	end
