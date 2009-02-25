@@ -97,7 +97,7 @@ module Sequel
       if (klass = @@adapters[scheme]).nil?
         # attempt to load the adapter file
         begin
-          require "sequel_core/adapters/#{scheme}"
+          require "vendor/sequel/lib/sequel_core/adapters/#{scheme}"
         rescue LoadError => e
           raise Error::AdapterNotFound, "Could not load #{scheme} adapter:\n  #{e.message}"
         end
