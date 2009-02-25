@@ -3,7 +3,7 @@
 end
 %w"core_ext sql core_sql connection_pool exceptions pretty_table
   dataset migration schema database object_graph version".each do |f|
-  require "sequel_core/#{f}"
+  require "vendor/sequel/lib/sequel_core/#{f}"
 end
 
 # Top level module for Sequel
