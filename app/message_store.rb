@@ -1,7 +1,7 @@
 module MessageStore
-	require 'vendor/sequel/lib/sequel'
-	require 'app/serial_cache'
-	DB_PATH = 'data/db/message_store.db'
+	require File.join( File.dirname( File.expand_path(__FILE__)), '..', 'vendor', 'sequel', 'lib', 'sequel')
+	require File.join( File.dirname( File.expand_path(__FILE__)), 'serial_cache')
+	DB_PATH = File.join( File.dirname( File.expand_path(__FILE__)), '..', 'data', 'db', 'message_store.db')
 	
 	unless File.exist?(DB_PATH)
 		@@db = Sequel.sqlite(DB_PATH)
