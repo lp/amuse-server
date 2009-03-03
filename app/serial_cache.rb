@@ -26,14 +26,14 @@ class SerialCache
 	
 	def self.messages(dataset)
 		message_threads = dataset.map
-		cache_path = File.join(CACHE_ROOT,"projects/#{message_threads[0][:project_id].to_s}/#{message_threads[0][:thread_id].to_s}.cache")
+		cache_path = File.join(CACHE_ROOT,'projects',"#{message_threads[0][:project_id].to_s}","#{message_threads[0][:thread_id].to_s}.cache")
 		Path.make(Path.dir(cache_path))
 		File.open(cache_path,'w') { |file| file.puts( Crypt.encrypt( YAML::dump( message_threads ))) }
 	end
 	
 	def self.threads(dataset)
 		project_threads = dataset.map
-		cache_path = File.join(CACHE_ROOT,"projects/#{project_threads[0][:project_id].to_s}.cache")
+		cache_path = File.join(CACHE_ROOT,'projects',"#{project_threads[0][:project_id].to_s}.cache")
 		Path.make(Path.dir(cache_path))
 		File.open(cache_path,'w') { |file| file.puts( Crypt.encrypt( YAML::dump( project_threads ))) }
 	end
