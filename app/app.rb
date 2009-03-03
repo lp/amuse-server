@@ -1,10 +1,10 @@
 require 'yaml'
 
-require 'app/helpers/projects'
-require 'app/helpers/messages'
-require 'app/helpers/threads'
-require 'app/helpers/crypt'
-require 'app/message_store'
+require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'projects')
+require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'messages')
+require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'threads')
+require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'crypt')
+require File.join( File.dirname( File.expand_path(__FILE__)), 'message_store')
 
 helpers do
 	include AmuseHelpers
