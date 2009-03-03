@@ -28,7 +28,6 @@ class CacheServer < Server
 end
 
 class FileReceive < Server
-	# @@request_buffer = Hash.new
 	
 	def call(env)
 		req = Rack::Request.new(env); filepath = File.join(@root, env['PATH_INFO'])
