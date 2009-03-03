@@ -2,7 +2,7 @@ module Crypt
 	require 'openssl'
 	require 'yaml'
 	
-	File.open('app/amuse.conf','r') do |f|
+	File.open(File.join( File.dirname( File.expand_path(__FILE__)), '..','amuse.conf'),'r') do |f|
 		content = YAML::load(f.read)
 		IV = content[:iv]
 		KEY = content[:key]
