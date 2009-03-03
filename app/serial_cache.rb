@@ -1,7 +1,7 @@
 class SerialCache
 	require 'yaml'
-	require 'app/helpers/path'
-	require 'app/helpers/crypt'
+	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers','path')
+	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers','crypt')
 	
 	CACHE_ROOT = 'data/cache'
 	
