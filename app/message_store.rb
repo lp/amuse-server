@@ -1,6 +1,7 @@
 module MessageStore
 	require File.join( File.dirname( File.expand_path(__FILE__)), '..', 'vendor', 'sequel', 'lib', 'sequel')
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'serial_cache')
+	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'random')
 	DB_PATH = File.join( File.dirname( File.expand_path(__FILE__)), '..', 'data', 'db', 'message_store.db')
 	
 	unless File.exist?(DB_PATH)
@@ -59,15 +60,6 @@ module MessageStore
 				column :author_id, :integer
 				column :title, :text
 				column :message, :text
-			end
-		rescue Sequel::DatabaseError
-		end
-		begin
-			@@db.create_table :keys do
-				primary_key :id
-				column :created, :datetime
-				column :author_id, :integer
-				column :keys, :text
 			end
 		rescue Sequel::DatabaseError
 		end
