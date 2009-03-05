@@ -25,3 +25,7 @@ end
 post '/messages/new' do
 	Crypt.encrypt( MessageStore.new_message( YAML::load( Crypt.decrypt( params[:o]))).to_s)
 end
+
+post '/keys' do
+	Crypt.encrypt( YAML::dump( KeyStore.author_keys( Crypt.decrypt( params[:o]))))
+end
