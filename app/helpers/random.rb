@@ -1,6 +1,7 @@
 module Random
 	
 	ALPHABET = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
+	OPERATORS = %w[+ - * /]
 	
 	def Random.keys(num,length=256)
 		keys = Array.new
@@ -20,6 +21,16 @@ module Random
 	
 	def Random.letter
 		ALPHABET[rand(26)]
+	end
+	
+	def Random.number(size)
+		number = ''
+		size.times { number << rand(10) }
+		number.to_i
+	end
+	
+	def Random.operator
+		OPERATORS[rand(4)]
 	end
 	
 end
