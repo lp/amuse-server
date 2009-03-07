@@ -1,6 +1,7 @@
 module KeyStore
 	require File.join( File.dirname( File.expand_path(__FILE__)), '..', 'vendor', 'sequel', 'lib', 'sequel')
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'random')
+	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'crypt')
 	DB_PATH = File.join( File.dirname( File.expand_path(__FILE__)), '..', 'data', 'db', 'key_store.db')
 	@@db = Sequel.sqlite(DB_PATH)
 	
@@ -10,15 +11,17 @@ module KeyStore
 		keys.each do |key|
 			@db[author_id.to_sym] << {:key => key}
 		end
-		keys
+		Crypt.encrypt( YAML::dump( keys))
 	end
 	
 	def KeyStore.authorized?(author_id,key)
-		result = @db[author_id.to_sym].filter(:key => key).delete
+		result = @db[author_id.to_sym].filter(:key => Crypt.decrypt( key)).delete
 		if result == 0
 			return false
-		else
+		elsif result > 0
 			return true
+		else
+			return false
 		end
 	end
 	
