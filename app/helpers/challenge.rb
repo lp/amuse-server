@@ -1,3 +1,7 @@
+# Author:: lp (mailto:lp@spiralix.org)
+# Copyright:: 2009 Louis-Philippe Perron - Released under the terms of the MIT license
+# 
+# :title:amuse-server/challenge
 class Challenge
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'random')
 	

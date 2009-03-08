@@ -1,3 +1,7 @@
+# Author:: lp (mailto:lp@spiralix.org)
+# Copyright:: 2009 Louis-Philippe Perron - Released under the terms of the MIT license
+# 
+# :title:amuse-server/random
 module Random
 	
 	ALPHABET = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
