@@ -62,10 +62,12 @@ module KeyStore
 	end
 	
 	def Keystore.response?(author_id,response)
+		response = Crypt.decrypt(response)
 		row = @@db[:challenge].filter(:author_id => author_id)
 		if Time.now.to_i > (row.map(:created)+50)
 			return false
 		elsif row.map(:response) == response
+			row.delete
 			return true
 		else
 			return false
