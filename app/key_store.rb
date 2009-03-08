@@ -1,3 +1,7 @@
+# Author:: lp (mailto:lp@spiralix.org)
+# Copyright:: 2009 Louis-Philippe Perron - Released under the terms of the MIT license
+# 
+# :title:amuse-server/key_store
 module KeyStore
 	require File.join( File.dirname( File.expand_path(__FILE__)), '..', 'vendor', 'sequel', 'lib', 'sequel')
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'random')
@@ -13,6 +17,21 @@ module KeyStore
 			column :response, :integer
 		end
 	rescue Sequel::DatabaseError
+	end
+	begin
+		@@db.create_table :ipkey do
+			primary_key :id
+			column :ip, :text
+			column :key, :text
+		end
+	rescue Sequel::DatabaseError
+	end
+	
+	def KeyStore.ip_key(ip)
+		@db[:ipkey].filter(:ip => ip).delete
+		key = Random.string(256)
+		@db[:ipkey] << {:ip => ip, :key => key}
+		Crypt.encrypt( key)
 	end
 	
 	def KeyStore.author_keys(author_id)
