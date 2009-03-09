@@ -7,8 +7,9 @@ class Challenge
 	
 	attr_reader :challenge, :response
 	def initialize
-		@challenge = [Random.operator, Random.number( (rand(4)+2)), Random.number( (rand(4)+2))]
-		@response = eval(@challenge[1].to_s+'.0'+@challenge[0]+@challenge[2].to_s).to_s
+		@challenge = [Random.operator, Random.float( (rand(4)+2)), Random.float( (rand(4)+2))]
+		@response = eval(@challenge[1].to_s+@challenge[0]+@challenge[2].to_s).to_s
+		puts "challenge: #{@challenge.inspect} response: #{@response.inspect}"
 	end
 	
 end
