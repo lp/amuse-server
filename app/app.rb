@@ -4,6 +4,7 @@
 # :title:amuse-server/app
 require 'yaml'
 
+require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'environment')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'projects')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'messages')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'threads')
