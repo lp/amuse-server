@@ -7,19 +7,24 @@ class AuthKeys
 	
 	def call(env)
 		req = Rack::Request.new(env)	
-		if req[:r].nil?
-			KeyStore.challenge(req[:a])
+		if req[:a].nil?
+			re = "Fuck Away!!"
+			[403, {	'Content-Type' => 'text/plain', 'Content-Length' => re.size.to_s}, re]
+		elsif req[:r].nil?
+			challenge = KeyStore.challenge(req[:a])
+			[200, {	'Content-Type' => 'application/octet-stream', 'Content-Length' => challenge.size.to_s},challenge]
 		else
 			if Keystore.response?(req[:a],req[:r])
 				if req[:a] == 'ipkey'
 					key = KeyStore.ip_key(req.ip)
-					[200, {	'Content-Type' => 'text/plain', 'Content-Length' => key.size.to_s},key]
+					[200, {	'Content-Type' => 'application/octet-stream', 'Content-Length' => key.size.to_s},key]
 				else
 					keys = KeyStore.author_keys(req[:a])
-					[200, {	'Content-Type' => 'text/plain', 'Content-Length' => keys.size.to_s},keys]
+					[200, {	'Content-Type' => 'application/octet-stream', 'Content-Length' => keys.size.to_s},keys]
 				end
 			else
-				[403, headers, "Go Away!!"]
+				re = "Fuck Away!!"
+				[403, {	'Content-Type' => 'text/plain', 'Content-Length' => re.size.to_s}, re]
 			end
 		end
 	end
@@ -40,7 +45,8 @@ module Rack
 			if KeyStore.authorized?(req[:a],req[:k])
 				[status, headers, body]
 			else
-				[403, headers, "Go Away!!"]
+				re = "Fuck Away!!"
+				[403, {	'Content-Type' => 'text/plain', 'Content-Length' => re.size.to_s}, re]
 			end
 		end
 
