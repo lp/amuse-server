@@ -27,10 +27,10 @@ module Random
 		ALPHABET[rand(26)]
 	end
 	
-	def Random.number(size)
+	def Random.float(size)
 		number = ''
-		size.times { number << rand(10) }
-		number.to_i
+		size.times { number << rand(10).to_s }
+		number.to_f
 	end
 	
 	def Random.operator
