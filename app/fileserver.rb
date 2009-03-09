@@ -16,7 +16,9 @@ class FileServer < Server
 							'Content-Length' => File.size(file_path).to_s},
 							FileStreamer.new(file_path)]
 		else
-			[404, {	'Content-Type' => 'text/plain' }, 'Sorry, File Not Found']
+			require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'crypt')
+			re = Crypt.encrypt( YAML::dump( nil))
+			[404, {	'Content-Type' => 'text/plain', 'Content-Length' => re.size.to_s}, re]
 		end
 	end
 end
