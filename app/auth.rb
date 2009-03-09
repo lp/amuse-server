@@ -14,7 +14,7 @@ class AuthKeys
 			challenge = KeyStore.challenge(req[:a])
 			[200, {	'Content-Type' => 'application/octet-stream', 'Content-Length' => challenge.size.to_s},challenge]
 		else
-			if Keystore.response?(req[:a],req[:r])
+			if KeyStore.response?(req[:a],req[:r])
 				if req[:a] == 'ipkey'
 					key = KeyStore.ip_key(req.ip)
 					[200, {	'Content-Type' => 'application/octet-stream', 'Content-Length' => key.size.to_s},key]
