@@ -14,7 +14,7 @@ module KeyStore
 			primary_key :id
 			column :created, :integer
 			column :author_id, :integer
-			column :response, :integer
+			column :response, :float
 		end
 	rescue Sequel::DatabaseError
 	end
@@ -28,9 +28,9 @@ module KeyStore
 	end
 	
 	def KeyStore.ip_key(ip)
-		@db[:ipkey].filter(:ip => ip).delete
+		@@db[:ipkey].filter(:ip => ip).delete
 		key = Random.string(256)
-		@db[:ipkey] << {:ip => ip, :key => key}
+		@@db[:ipkey] << {:ip => ip, :key => key}
 		Crypt.encrypt( key)
 	end
 	
@@ -38,7 +38,7 @@ module KeyStore
 		keys = Random.keys(256,256)
 		clean_author_keys_table(author_id)
 		keys.each do |key|
-			@db[author_id.to_sym] << {:key => key}
+			@@db[author_id.to_sym] << {:key => key}
 		end
 		Crypt.encrypt( YAML::dump( keys))
 	end
@@ -47,7 +47,7 @@ module KeyStore
 		if author_id.nil?
 			return false
 		else
-			result = @db[author_id.to_sym].filter(:key => Crypt.decrypt( key)).delete
+			result = @@db[author_id.to_sym].filter(:key => key).delete
 			if result == 0
 				return false
 			elsif result > 0
@@ -66,11 +66,11 @@ module KeyStore
 	end
 	
 	def KeyStore.response?(author_id,response)
-		response = Crypt.decrypt(response)
+		response = Crypt.decrypt(response).to_f
 		row = @@db[:challenge].filter(:author_id => author_id)
 		if Time.now.to_i > (row.map(:created).first+50)
 			return false
-		elsif row.map(:response) == response
+		elsif row.map(:response).first == response
 			row.delete
 			return true
 		else
@@ -89,7 +89,7 @@ module KeyStore
 			end
 		rescue Sequel::DatabaseError
 		end
-		@db[author_id.to_sym].all.delete
+		@@db[author_id.to_sym].all.delete
 	end
 	
 end
