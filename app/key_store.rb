@@ -44,13 +44,17 @@ module KeyStore
 	end
 	
 	def KeyStore.authorized?(author_id,key)
-		result = @db[author_id.to_sym].filter(:key => Crypt.decrypt( key)).delete
-		if result == 0
+		if author_id.nil?
 			return false
-		elsif result > 0
-			return true
 		else
-			return false
+			result = @db[author_id.to_sym].filter(:key => Crypt.decrypt( key)).delete
+			if result == 0
+				return false
+			elsif result > 0
+				return true
+			else
+				return false
+			end
 		end
 	end
 	
@@ -61,7 +65,7 @@ module KeyStore
 		Crypt.encrypt( YAML::dump( c.challenge))
 	end
 	
-	def Keystore.response?(author_id,response)
+	def KeyStore.response?(author_id,response)
 		response = Crypt.decrypt(response)
 		row = @@db[:challenge].filter(:author_id => author_id)
 		if Time.now.to_i > (row.map(:created)+50)
