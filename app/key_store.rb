@@ -7,30 +7,38 @@ module KeyStore
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'random')
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'crypt')
 	require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'challenge')
-	DB_PATH = File.join( File.dirname( File.expand_path(__FILE__)), '..', 'data', 'db', 'key_store.db')
-	@@db = Sequel.sqlite(DB_PATH)
-	begin
-		@@db.create_table :challenge do
-			primary_key :id
-			column :created, :integer
-			column :author_id, :integer
-			column :response, :float
+	KEY_DB_PATH = File.join( File.dirname( File.expand_path(__FILE__)), '..', 'data', 'db', 'key_store.db')
+	
+	def KeyStore.setup
+		unless File.exist?(KEY_DB_PATH)
+			@@db = Sequel.sqlite(KEY_DB_PATH)
+			begin
+				@@db.create_table :challenge do
+					primary_key :id
+					column :created, :integer
+					column :author_id, :integer
+					column :response, :float
+				end
+			rescue Sequel::DatabaseError
+			end
+			begin
+				@@db.create_table :ipkey do
+					primary_key :id
+					column :created, :integer
+					column :ip, :text
+					column :key, :text
+				end
+			rescue Sequel::DatabaseError
+			end
+		else
+			@@db = Sequel.sqlite(KEY_DB_PATH)
 		end
-	rescue Sequel::DatabaseError
-	end
-	begin
-		@@db.create_table :ipkey do
-			primary_key :id
-			column :ip, :text
-			column :key, :text
-		end
-	rescue Sequel::DatabaseError
 	end
 	
 	def KeyStore.ip_key(ip)
 		@@db[:ipkey].filter(:ip => ip).delete
 		key = Random.string(256)
-		@@db[:ipkey] << {:ip => ip, :key => key}
+		@@db[:ipkey] << {:ip => ip, :key => key, :created => Time.now.to_i}
 		Crypt.encrypt( key)
 	end
 	
@@ -38,7 +46,7 @@ module KeyStore
 		keys = Random.keys(256,256)
 		clean_author_keys_table(author_id)
 		keys.each do |key|
-			@@db[author_id.to_sym] << {:key => key}
+			@@db[author_id.to_sym] << {:key => key, :created => Time.now.to_i}
 		end
 		Crypt.encrypt( YAML::dump( keys))
 	end
@@ -68,7 +76,9 @@ module KeyStore
 	def KeyStore.response?(author_id,response)
 		response = Crypt.decrypt(response).to_f
 		row = @@db[:challenge].filter(:author_id => author_id)
-		if Time.now.to_i > (row.map(:created).first+50)
+		keytime = row.map(:created).first
+		puts "keytime: #{keytime.inspect}"
+		if Time.now.to_i > (keytime+50)
 			return false
 		elsif row.map(:response).first == response
 			row.delete
@@ -84,7 +94,7 @@ module KeyStore
 		begin
 			@@db.create_table author_id.to_sym do
 				primary_key :id
-				column :created, :datetime
+				column :created, :integer
 				column :key, :text
 			end
 		rescue Sequel::DatabaseError
