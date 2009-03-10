@@ -4,12 +4,12 @@
 # :title:amuse-server/app
 require 'yaml'
 
-require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'environment')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'projects')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'messages')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'threads')
 require File.join( File.dirname( File.expand_path(__FILE__)), 'helpers', 'crypt')
-require File.join( File.dirname( File.expand_path(__FILE__)), 'message_store')
+# require File.join( File.dirname( File.expand_path(__FILE__)), 'message_store')
+# require File.join( File.dirname( File.expand_path(__FILE__)), 'key_store')
 
 helpers do
 	include AmuseHelpers
